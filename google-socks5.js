@@ -7,10 +7,11 @@
 //  - Adds broad Google coverage (google.* and common Google properties).
 //  - Adds Google ads/measurement domains so ad/tracking requests go through the proxy.
 //
-// NOTE: PAC scripts can't guarantee zero IP leakage (e.g., DNS resolution, WebRTC/STUN, QUIC,
-// or non-browser traffic). See chat notes for hardening tips.
+// FAIL-CLOSED CHANGE:
+//  - For any matched host, we return ONLY the proxy (no "; DIRECT").
+//    If the local proxy is down, those requests will fail instead of going direct.
 
-var PROXY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808; DIRECT";
+var PROXY_ONLY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808";
 var DIRECT = "DIRECT";
 
 var PATTERNS = [
@@ -140,10 +141,10 @@ function FindProxyForURL(url, host) {
     }
   }
 
-  // Match host against patterns
+  // Match host against patterns (FAIL-CLOSED: proxy only)
   for (var i = 0; i < PATTERNS.length; i++) {
     if (shExpMatch(host, PATTERNS[i])) {
-      return PROXY;
+      return PROXY_ONLY; // <- no DIRECT fallback
     }
   }
 
