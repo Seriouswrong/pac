@@ -1,36 +1,151 @@
+// Auto-generated PAC from FoxyProxy JSON rules (googlepattern.json)
+// Proxy: SOCKS5 127.0.0.1:10808
+// Matches are host-based and use shell-style wildcards (shExpMatch).
+//
+// Enhancements:
+//  - For any pattern like "*.example.com", includes "example.com" too (root domain).
+//  - Adds broad Google coverage (google.* and common Google properties).
+//  - Adds Google ads/measurement domains so ad/tracking requests go through the proxy.
+//
+// NOTE: PAC scripts can't guarantee zero IP leakage (e.g., DNS resolution, WebRTC/STUN, QUIC,
+// or non-browser traffic). See chat notes for hardening tips.
+
+var PROXY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808; DIRECT";
+var DIRECT = "DIRECT";
+
+var PATTERNS = [
+  "*.1e100.net",
+  "*.2mdn.net",
+  "*.ad.doubleclick.net",
+  "*.adclick.g.doubleclick.net",
+  "*.ads.google.com",
+  "*.adservice.google.com",
+  "*.analytics.google.com",
+  "*.api.gfiber.com",
+  "*.blogger.com",
+  "*.blogspot.*",
+  "*.csp.withgoogle.com",
+  "*.doubleclick.net",
+  "*.fiber.google.com",
+  "*.firebaseapp.com",
+  "*.firebaseio.com",
+  "*.g.co",
+  "*.g.doubleclick.net",
+  "*.gfiber.com",
+  "*.gfiber.speedtestcustom.com",
+  "*.ggpht.com",
+  "*.google-analytics.com",
+  "*.google.*",
+  "*.google.com",
+  "*.googleads.g.doubleclick.net",
+  "*.googleadservices.com",
+  "*.googleanalytics.com",
+  "*.googleapis.com",
+  "*.googlefiber.net",
+  "*.googlesyndication.com",
+  "*.googletagmanager.com",
+  "*.googletagservices.com",
+  "*.googleusercontent.com",
+  "*.googlevideo.com",
+  "*.gstatic.com",
+  "*.gvt1.com",
+  "*.gvt2.com",
+  "*.lh3.googleusercontent.com",
+  "*.m.youtube.com",
+  "*.maps.googleapis.com",
+  "*.pagead2.googlesyndication.com",
+  "*.recaptcha.net",
+  "*.s.ytimg.com",
+  "*.securepubads.g.doubleclick.net",
+  "*.speedtestcustom.com",
+  "*.ssl.google-analytics.com",
+  "*.stats.g.doubleclick.net",
+  "*.tpc.googlesyndication.com",
+  "*.www.googletagmanager.com",
+  "*.youtube-nocookie.com",
+  "*.youtube.com",
+  "*.youtube.googleapis.com",
+  "*.youtubei.googleapis.com",
+  "*.ytimg.com",
+  "1e100.net",
+  "2mdn.net",
+  "ad.doubleclick.net",
+  "adclick.g.doubleclick.net",
+  "ads.google.com",
+  "adservice.google.com",
+  "analytics.google.com",
+  "api.gfiber.com",
+  "blogger.com",
+  "blogspot.*",
+  "csp.withgoogle.com",
+  "doubleclick.net",
+  "fiber.google.com",
+  "firebaseapp.com",
+  "firebaseio.com",
+  "g.co",
+  "g.doubleclick.net",
+  "gfiber.com",
+  "gfiber.speedtestcustom.com",
+  "ggpht.com",
+  "google-analytics.com",
+  "google.*",
+  "google.com",
+  "googleads.g.doubleclick.net",
+  "googleadservices.com",
+  "googleanalytics.com",
+  "googleapis.com",
+  "googlefiber.net",
+  "googlesyndication.com",
+  "googletagmanager.com",
+  "googletagservices.com",
+  "googleusercontent.com",
+  "googlevideo.com",
+  "gstatic.com",
+  "gvt1.com",
+  "gvt2.com",
+  "lh3.googleusercontent.com",
+  "m.youtube.com",
+  "maps.googleapis.com",
+  "pagead2.googlesyndication.com",
+  "recaptcha.net",
+  "s.ytimg.com",
+  "securepubads.g.doubleclick.net",
+  "speedtestcustom.com",
+  "ssl.google-analytics.com",
+  "stats.g.doubleclick.net",
+  "tpc.googlesyndication.com",
+  "www.googletagmanager.com",
+  "youtube-nocookie.com",
+  "youtube.com",
+  "youtube.googleapis.com",
+  "youtubei.googleapis.com",
+  "ytimg.com"
+];
+
 function FindProxyForURL(url, host) {
-  // ALL Google services + infrastructure via SOCKS5
-  if (host == "google.com" ||
-      dnsDomainIs(host, ".google.com") ||        // google.com + subdomains (fiber, accounts, etc.)
-      host == "googleusercontent.com" ||
-      dnsDomainIs(host, ".googleusercontent.com") ||
-      host == "googleapis.com" ||
-      dnsDomainIs(host, ".googleapis.com") ||
-      host == "gstatic.com" ||
-      dnsDomainIs(host, ".gstatic.com") ||
-      host == "youtube.com" ||
-      dnsDomainIs(host, ".youtube.com") ||
-      host == "1e100.net" ||
-      dnsDomainIs(host, ".1e100.net") ||
-      host == "gvt1.com" ||
-      dnsDomainIs(host, ".gvt1.com") ||
-      dnsDomainIs(host, ".ggpht.com") ||         // Google photos + static assets
-      dnsDomainIs(host, ".googlesyndication.com") || // Google Ads
-      dnsDomainIs(host, ".google-analytics.com") ||  // Analytics
-      dnsDomainIs(host, ".doubleclick.net")) {     // DoubleClick (ads/tracking)
-    return "SOCKS5 127.0.0.1:10808";
+  host = (host || "").toLowerCase();
+
+  // Don't proxy obvious local stuff
+  if (!host || host === "localhost" || isPlainHostName(host)) {
+    return DIRECT;
   }
 
-  /*
-  // whatismyip.com (bare + subdomains) via SOCKS5
-  if (host == "whatismyip.com" ||
-      dnsDomainIs(host, ".whatismyip.com")) {
-    return "SOCKS5 127.0.0.1:10808";
+  // If the host is a literal IPv4 address, don't proxy private/local ranges
+  if (/^(\d{1,3}\.){3}\d{1,3}$/.test(host)) {
+    if (isInNet(host, "127.0.0.0", "255.0.0.0") ||
+        isInNet(host, "10.0.0.0",  "255.0.0.0") ||
+        isInNet(host, "192.168.0.0","255.255.0.0") ||
+        isInNet(host, "172.16.0.0","255.240.0.0")) {
+      return DIRECT;
+    }
   }
-*/
 
-  // Everything else direct
-  return "DIRECT";
+  // Match host against patterns
+  for (var i = 0; i < PATTERNS.length; i++) {
+    if (shExpMatch(host, PATTERNS[i])) {
+      return PROXY;
+    }
+  }
+
+  return DIRECT;
 }
-
-
