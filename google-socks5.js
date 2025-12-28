@@ -17,12 +17,15 @@ function FindProxyForURL(url, host) {
     return "SOCKS5 127.0.0.1:10808";
   }
 
+  /*
   // whatismyip.com (bare + subdomains) via SOCKS5
   if (host == "whatismyip.com" ||
       dnsDomainIs(host, ".whatismyip.com")) {
     return "SOCKS5 127.0.0.1:10808";
   }
+*/
 
   // Everything else direct
   return "DIRECT";
 }
+
