@@ -1,7 +1,7 @@
 function FindProxyForURL(url, host) {
-  // Google bare domains + subdomains via SOCKS5
+  // ALL Google services + infrastructure via SOCKS5
   if (host == "google.com" ||
-      dnsDomainIs(host, ".google.com") ||
+      dnsDomainIs(host, ".google.com") ||        // google.com + subdomains (fiber, accounts, etc.)
       host == "googleusercontent.com" ||
       dnsDomainIs(host, ".googleusercontent.com") ||
       host == "googleapis.com" ||
@@ -13,7 +13,11 @@ function FindProxyForURL(url, host) {
       host == "1e100.net" ||
       dnsDomainIs(host, ".1e100.net") ||
       host == "gvt1.com" ||
-      dnsDomainIs(host, ".gvt1.com")) {
+      dnsDomainIs(host, ".gvt1.com") ||
+      dnsDomainIs(host, ".ggpht.com") ||         // Google photos + static assets
+      dnsDomainIs(host, ".googlesyndication.com") || // Google Ads
+      dnsDomainIs(host, ".google-analytics.com") ||  // Analytics
+      dnsDomainIs(host, ".doubleclick.net")) {     // DoubleClick (ads/tracking)
     return "SOCKS5 127.0.0.1:10808";
   }
 
@@ -28,4 +32,5 @@ function FindProxyForURL(url, host) {
   // Everything else direct
   return "DIRECT";
 }
+
 
