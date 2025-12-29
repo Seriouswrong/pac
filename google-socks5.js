@@ -15,8 +15,25 @@ var PROXY_ONLY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808";
 var DIRECT = "DIRECT";
 
 var PATTERNS = [
+  "*.chatgpt.com",
+  "chatgpt.com",
+  "openai.com",
+  "*.openai.com",
+  "oaistatic.com",
+  "*.oaistatic.com",
+  "*.oaistatic.com",
+  "*.featuregates.org",
+  "featuregates.org",
+  "statsigapi.net",
+  "*statsigapi.net",
+  "*.statsig.com",
+  "statsig.com",
   "*.ifconfig.me",
   "ifconfig.me",
+  "chatgpt.livekit.cloud",
+  "livekit.cloud",
+  "rum.browser-intake-datadoghq.com",
+  "o33249.ingest.sentry.io", 
   "*.1e100.net",
   "*.2mdn.net",
   "*.ad.doubleclick.net",
@@ -152,4 +169,5 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
 
