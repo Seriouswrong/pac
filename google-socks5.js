@@ -15,6 +15,8 @@ var PROXY_ONLY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808";
 var DIRECT = "DIRECT";
 
 var PATTERNS = [
+  "*.ifconfig.me",
+  "ifconfig.me",
   "*.1e100.net",
   "*.2mdn.net",
   "*.ad.doubleclick.net",
@@ -150,3 +152,4 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
