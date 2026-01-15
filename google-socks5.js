@@ -139,6 +139,9 @@ var PATTERNS = [
   "youtube.com",
   "youtube.googleapis.com",
   "youtubei.googleapis.com",
+  "app.pretty-prompt.com",
+  "*.pretty-prompt.com",
+  "pretty-prompt.com",
   "ytimg.com"
 ];
 
@@ -169,5 +172,6 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
 
 
