@@ -144,6 +144,7 @@ var PATTERNS = [
   "app.pretty-prompt.com",
   "*.pretty-prompt.com",
   "pretty-prompt.com",
+  "nzbgeek.info",
   "ytimg.com"
 ];
 
@@ -174,6 +175,7 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
 
 
 
