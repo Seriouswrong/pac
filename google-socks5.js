@@ -57,6 +57,7 @@ var PATTERNS = [
   "*.google-analytics.com",
   "*.google.*",
   "*.google.com",
+  "labs.google.com",
   "*.googleads.g.doubleclick.net",
   "*.googleadservices.com",
   "*.googleanalytics.com",
@@ -176,6 +177,7 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
 
 
 
