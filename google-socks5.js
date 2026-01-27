@@ -15,6 +15,7 @@ var PROXY_ONLY = "SOCKS5 127.0.0.1:10808; SOCKS 127.0.0.1:10808";
 var DIRECT = "DIRECT";
 
 var PATTERNS = [
+  "labs.google",
   "*.google",
   "*.chatgpt.com",
   "chatgpt.com",
@@ -178,6 +179,7 @@ function FindProxyForURL(url, host) {
 
   return DIRECT;
 }
+
 
 
 
